@@ -7,8 +7,7 @@ public class Model {
         int width;
         int height;
 
-
-    Point[] points = {new Point(5,5), new Point(5,6), new Point(6,6), new Point(8,6), new Point(9,6)};
+    Point[] points = {new Point(7,7), new Point(7,8), new Point(7,6), new Point(8,7), new Point(8,8), new Point(10,8), new Point(11,8)};
 
     public Model(int width, int height) {
         this.width = width;
@@ -16,21 +15,28 @@ public class Model {
     }
 
     public void update() {
-            for (int i = 0; i < points.length; i++){
+        int die = 0;
+        int[] dying;
+
+        for (int i = 0; i < points.length; i++){
+            if ( getNeighbour(points, points[i]) < 2 ||  getNeighbour(points, points[i]) > 3){
+                die++;
+                dying = new int[die];
+            }
+        }
+
+        for (int i = 0; i < points.length; i++){
 
                 System.out.println(points[i] + " has " + getNeighbour(points, points[i]) + " neigbhours");
 
                 if ( getNeighbour(points, points[i]) < 2 ||  getNeighbour(points, points[i]) > 3){
-                    // kill it
-                    Arrays.toString(points);
-                    // Remove the element
-                    points = removeTheElement(points, i);
-
-                    i--;
+                        // kill it
+                        Arrays.toString(points);
+                        // Remove the element
+                        points = removeTheElement(points, i);
+                        i--;
                 }
             }
-
-
     }
     public int getNeighbour(Point[] points, Point point){
         int neigbhour = -1;
