@@ -4,10 +4,11 @@ import View.*;
 import java.util.Arrays;
 
 public class Model {
-        int width;
-        int height;
+    int width;
+    int height;
+    int neigbhours;
 
-    Point[] points = {new Point(7,7), new Point(7,8), new Point(7,6), new Point(8,7), new Point(8,8), new Point(10,8), new Point(11,8)};
+    Point[] points = {new Point(7, 7), new Point(7, 8), new Point(7, 6), new Point(8, 7), new Point(8, 8), new Point(10, 8), new Point(11, 8), new Point(3,1), new Point(4,1), new Point(3,2), new Point(4,2)};
 
     public Model(int width, int height) {
         this.width = width;
@@ -16,28 +17,46 @@ public class Model {
 
     public void update() {
         int die = 0;
-        int[] dying;
 
-        for (int i = 0; i < points.length; i++){
-            if ( getNeighbour(points, points[i]) < 2 ||  getNeighbour(points, points[i]) > 3){
+        for (int i = 0; i < points.length; i++) {
+            if (getNeighbour(points, points[i]) < 2 || getNeighbour(points, points[i]) > 3) {
                 die++;
-                dying = new int[die];
+
             }
         }
+        int[] dying = new int[die];
+        int deaths = 0;
+        int removed = 0;
 
-        for (int i = 0; i < points.length; i++){
+        for (int i = 0; i < points.length; i++) {
 
-                System.out.println(points[i] + " has " + getNeighbour(points, points[i]) + " neigbhours");
+          //  System.out.println(points[i] + " has " + getNeighbour(points, points[i]) + " neigbhours");
 
-                if ( getNeighbour(points, points[i]) < 2 ||  getNeighbour(points, points[i]) > 3){
-                        // kill it
-                        Arrays.toString(points);
-                        // Remove the element
-                        points = removeTheElement(points, i);
-                        i--;
-                }
+            if (getNeighbour(points, points[i]) < 2 || getNeighbour(points, points[i]) > 3) {
+                dying[deaths] = i;
+                deaths++;
             }
+        }
+      //  System.out.println(Arrays.toString(dying));
+
+
+        for (int i = 0; i < dying.length; i++) {
+            // kill it
+            Arrays.toString(points);
+            // Remove the element
+            points = removeTheElement(points, dying[i]-removed);
+            removed++;
+        }
+        System.out.println(neigbhours);
+
+       // if (neigbhours == 3){
+         //   points.add(new Point(x, y))
+       // }
+        // add new points: points.add(new Point(x, y));
+
     }
+
+
     public int getNeighbour(Point[] points, Point point){
         int neigbhour = -1;
 
@@ -48,15 +67,38 @@ public class Model {
                     neigbhour++;
                 }
             }
-
-
-
         return neigbhour;
         }
 
+    public int revive(Point[] points, int width, int height){
+        int neigbhours = 0;
+        int x;
+        int y;
 
 
-    public int checkNeigbhours(Point[] points, int width, int height){
+        for (int i = 0; i < points.length; i++) {
+
+            for (int p = 1; p < height; p++) {
+                y = p;
+                x = 1;
+
+                for (int o = 2; o < width; o++) {
+                    if (x - points[i].getX() <= 1 && x - points[i].getX() >= -1 && y - points[i].getY() <= 1 && y - points[i].getY() >= -1) {
+                        neigbhours++;
+                    }
+                    x = o;
+
+                }
+            }
+
+        }
+
+        return neigbhours;
+    }
+
+
+
+   /* public int checkNeigbhours(Point[] points, int width, int height){
             int neigbhours = 0;
             int x;
             int y;
@@ -79,7 +121,7 @@ public class Model {
 
             return neigbhours;
         }
-
+*/
 
 
     public Point[] getPoints() {
